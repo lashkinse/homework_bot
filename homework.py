@@ -28,9 +28,7 @@ HOMEWORK_VERDICTS = {
 
 
 def init_logger():
-    """
-    Инициализирует лог
-    """
+    """Инициализирует лог"""
     handler = logging.StreamHandler(sys.stderr)
     formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
     handler.setFormatter(formatter)
@@ -63,9 +61,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(timestamp):
-    """
-    Делает запрос к эндпоинту API-сервиса
-    """
+    """Делает запрос к эндпоинту API-сервиса"""
     params = {
         "url": ENDPOINT,
         "headers": HEADERS,
@@ -90,7 +86,8 @@ def get_api_answer(timestamp):
 
 def check_response(response):
     """
-    Извлекает из информации о конкретной домашней работе статус этой работы
+    Извлекает из информации о конкретной домашней работе статус
+    этой работы
     """
     logging.debug("Начало проверки ответа API-сервиса")
     if not isinstance(response, dict):
@@ -107,9 +104,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """
-    Проверяет ответ API на соответствие документации
-    """
+    """Проверяет ответ API на соответствие документации"""
     if "homework_name" not in homework:
         raise KeyError("В ответе отсутствует ключ homework_name")
     homework_name = homework.get("homework_name")
@@ -123,9 +118,7 @@ def parse_status(homework):
 
 
 def main():
-    """
-    Основная логика работы бота
-    """
+    """Основная логика работы бота"""
     if not check_tokens():
         logging.critical("Не заданы одна или несколько переменных окружения")
         sys.exit(0)
