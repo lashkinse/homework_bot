@@ -37,18 +37,12 @@ def init_logger():
 
 
 def check_tokens():
-    """
-    Проверяет доступность переменных окружения, которые необходимы для
-    работы программы.
-    """
+    """Проверяет доступность переменных окружения."""
     return PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID
 
 
 def send_message(bot, message):
-    """
-    Отправляет сообщение в Telegram чат, определяемый переменной
-    окружения TELEGRAM_CHAT_ID.
-    """
+    """Отправляет сообщение в Telegram чат."""
     try:
         logging.debug(f"Отправка сообщения: {message}")
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
@@ -85,10 +79,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """
-    Извлекает из информации о конкретной домашней работе статус
-    этой работы.
-    """
+    """Извлекает из информации статус работы."""
     logging.debug("Начало проверки ответа API-сервиса")
     if not isinstance(response, dict):
         raise TypeError("Ошибка в типе ответа API")
