@@ -85,7 +85,7 @@ def get_api_answer(timestamp):
             f"Ошибка при запросе к эндпоинту API-сервиса: {error}"
         )
     else:
-        logging.debug(f"Запрос успешно получен")
+        logging.debug("Запрос успешно получен")
 
     try:
         logging.debug("Начало обработки запроса")
