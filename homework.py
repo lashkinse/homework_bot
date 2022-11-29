@@ -30,7 +30,12 @@ HOMEWORK_VERDICTS = {
 def init_logger():
     """Инициализирует лог."""
     handler = logging.StreamHandler(sys.stderr)
-    formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+    formatter = logging.Formatter(
+        fmt=(
+            "%(asctime)s [%(levelname)s] | "
+            "(%(filename)s).%(funcName)s:%(lineno)d | %(message)s"
+        ),
+    )
     handler.setFormatter(formatter)
     logging.getLogger().setLevel(logging.DEBUG)
     logging.getLogger().addHandler(handler)
@@ -38,7 +43,13 @@ def init_logger():
 
 def check_tokens():
     """Проверяет доступность переменных окружения."""
-    return PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID
+    if not PRACTICUM_TOKEN:
+        return logging.error("Не задан PRACTICUM_TOKEN")
+    if not TELEGRAM_TOKEN:
+        return logging.error("Не задан TELEGRAM_TOKEN")
+    if not TELEGRAM_CHAT_ID:
+        return logging.error("Не задан TELEGRAM_CHAT_ID")
+    return True
 
 
 def send_message(bot, message):
@@ -69,13 +80,24 @@ def get_api_answer(timestamp):
                 f"Не удалось получить ответ от API-сервиса, код ошибки: "
                 f"{response.status_code}"
             )
-        result = response.json()
-        logging.debug(f"Запрос успешно получен: {result}")
-        return result
-    except Exception as error:
+    except requests.exceptions.RequestException as error:
         raise exceptions.YandexConnectionError(
             f"Ошибка при запросе к эндпоинту API-сервиса: {error}"
         )
+    else:
+        logging.debug(f"Запрос успешно получен")
+
+    try:
+        logging.debug("Начало обработки запроса")
+        result = response.json()
+    except ValueError as error:
+        raise exceptions.YandexDecodingJSONError(
+            f"Ошибка при декодировании запроса от API-сервиса: {error}"
+        )
+    else:
+        logging.debug(f"Запрос успешно обработан: {result}")
+
+    return result
 
 
 def check_response(response):
@@ -111,8 +133,9 @@ def parse_status(homework):
 def main():
     """Основная логика работы бота."""
     if not check_tokens():
-        logging.critical("Не заданы одна или несколько переменных окружения")
-        sys.exit(0)
+        error_message = "Не заданы одна или несколько переменных окружения"
+        logging.critical(error_message)
+        sys.exit(error_message)
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     current_data = int(time.time())
     prev_message = None
@@ -132,7 +155,7 @@ def main():
             logging.error(f"Ошибка при отправке сообщения в Telegram: {error}")
         except Exception as error:
             error_message = f"Сбой в работе программы: {error}"
-            logging.error(error_message)
+            logging.exception(error_message)
             send_message(bot, error_message)
         finally:
             time.sleep(RETRY_PERIOD)
