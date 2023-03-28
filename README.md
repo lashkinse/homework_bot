@@ -1,21 +1,16 @@
-### Telegram-bot
+# Проект Telegram-bot
 
 ```
-Телеграм-бот для отслеживания статуса проверки домашней работы на Яндекс.Практикум.
-Присылает сообщения, когда статус изменен - взято в проверку, есть замечания, зачтено.
+Телеграм-бот для отслеживания состояния проверки домашних заданий на платформе Яндекс.Практикум.
+Уведомляет пользователей о любых изменениях в статусе проверки, таких как "в процессе проверки", "имеются замечания", "задание выполнено".
 ```
 
-### Технологии:
-- Python 3.9
-- python-dotenv 0.19.0
-- python-telegram-bot 13.7
-
-### Как запустить проект:
+## Как запустить проект:
 
 Клонировать репозиторий и перейти в него в командной строке:
 
 ```
-git clone git@github.com:PashkaVRN/homework_bot.git
+git clone https://github.com/lashkinse/homework_bot.git
 ```
 
 ```
@@ -25,18 +20,26 @@ cd homework_bot
 Cоздать и активировать виртуальное окружение:
 
 ```
-python -m venv env
+python3 -m venv env
 ```
 
+* Если у вас Linux/macOS
+
+    ```
+    source env/bin/activate
+    ```
+
+* Если у вас windows
+
+    ```
+    source env/scripts/activate
+    ```
+
 ```
-source env/bin/activate
+python3 -m pip install --upgrade pip
 ```
 
 Установить зависимости из файла requirements.txt:
-
-```
-python -m pip install --upgrade pip
-```
 
 ```
 pip install -r requirements.txt
