@@ -1,4 +1,8 @@
-# Homework-bot
+# Телеграм-бот (homework_bot)
+![python version](https://img.shields.io/badge/Python-3.9-green)
+![pytest version](https://img.shields.io/badge/python-telegram-bot-13.7-green)
+![requests version](https://img.shields.io/badge/requests-2.26-green)
+![sorl-thumbnail version](https://img.shields.io/badge/thumbnail-12.7-green)
 
 Телеграм-бот для отслеживания состояния проверки домашних заданий на платформе Яндекс.Практикум.
 Уведомляет пользователей о любых изменениях в статусе проверки, таких как "в процессе проверки", "имеются замечания", "задание выполнено".
